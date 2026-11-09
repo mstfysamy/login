@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url(/src/vecteezy_elevate-your-desktop-with-a-stunning-4k-wallpaper-featuring_77155632.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 10px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        .container {
+            background-color: rgba(15, 23, 42, 0.75);
+            width: 90%;
+            max-width: 420px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 25px 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .container .description h2 {
+            color: #ffffff;
+            text-transform: capitalize;
+            font-size: 38px;
+            font-weight: bold;
+        }
+
+        .container .description p {
+            color: #94a3b8;
+            padding: 10px 0 20px;
+            font-size: 15px;
+            text-transform: capitalize;
+        }
+
+        .container form .inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .container form .inputs input {
+            width: 100%;
+            height: 45px;
+            border-radius: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+            padding: 0 15px;
+            background-color: rgba(14, 13, 13, 0.341);
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .container .forget-remember {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .container .forget-remember .remember label {
+            color: #ffffff;
+            text-transform: lowercase;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .container .forget-remember a,
+        .container .another-way a,
+        .container .sign-up a {
+            text-decoration: none;
+            color: #8b5cf6;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .container .button-s {
+            margin-top: 20px;
+            width: 100%;
+            height: 45px;
+            border-radius: 11px;
+            background-image: linear-gradient(to right, #ec4899, #8b5cf6);
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .container .button-s:hover {
+            transform: translateY(-3px);
+        }
+
+        .container .or {
+            padding: 15px 0 10px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .container .buttons {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+
+        .container .buttons button {
+            background-color: rgba(14, 13, 13, 0.341);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            height: 42px;
+            width: 50%;
+            font-size: 15px;
+            text-transform: capitalize;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .container .buttons button:hover {
+            transform: translateY(-3px);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .container .sign-up p,
+        .container .another-way p {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-msg {
+            color: #22c55e;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        
+        <!-- 1. Login -->
+        <div id="login-view" class="view-section active">
+            <div class="description">
+                <h2>Login</h2>
+                <p>welcome back! please sign in.</p>
+            </div>
+            <form id="login-form">
+                <div class="inputs">
+                    <input class="user" type="text" id="login-user" placeholder="Enter your username" required maxlength="15" minlength="5">
+                    <input class="pass" type="password" id="login-pass" placeholder="Enter your password" required minlength="8">
+                </div>
+                <div id="login-error" class="error-msg"></div>
+                <div class="forget-remember">
+                    <div class="remember">
+                        <input type="checkbox" name="remember" id="remember">
+                        <label for="remember">remember me</label>
+                    </div>
+                    <a onclick="switchView('forget-user-view')">forget password?</a>
+                </div>
+                <input class="button-s" type="submit" value="Login  → ">
+            </form>
+            <p class="or">or continue with</p>
+            <div class="buttons">
+                <button type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg> Facebook
+                </button>
+                <button type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                        <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.9C6.2 7.3 8.9 5 12 5z"/>
+                        <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+                        <path fill="#FBBC05" d="M5.3 14.7c-.2-.7-.4-1.5-.4-2.7s.2-2 .4-2.7L1.6 6.4C.6 8.4 0 10.6 0 13s.6 4.6 1.6 6.6l3.7-2.9z"/>
+                        <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.3-6.7-5.3L1.6 15C3.5 18.8 7.4 23 12 23z"/>
+                    </svg> Google
+                </button>
+            </div>
+            <div class="sign-up">
+                <p>Don't have an account? <a onclick="switchView('signup-view')">sign up</a></p>
+            </div>
+        </div>
+
+        <!-- 2. Sign up -->
+        <div id="signup-view" class="view-section">
+            <div class="description">
+                <h2>Sign up</h2>
+                <p>welcome of you.</p>
+            </div>
+            <form id="signup-form">
+                <div class="inputs">
+                    <input class="user" type="text" id="su-user" placeholder="Enter username (Letters & Numbers only)" required maxlength="15" minlength="5" pattern="^[a-zA-Z0-9]+$">
+                    <input class="pass" type="password" id="su-pass" placeholder="Enter your password" required minlength="8">
+                    <input class="phone" type="text" id="su-phone" placeholder="Enter your phone number" required minlength="11" maxlength="11" pattern="[0-9]{11}" inputmode="numeric">
+                </div>
+                <div id="signup-error" class="error-msg"></div>
+                <input class="button-s" type="submit" value="Sign up  → ">
+            </form>
+            <div class="another-way">
+                <p>Already have an account? <a onclick="switchView('login-view')">Login</a></p>
+            </div>
+        </div>
+
+        <!-- 3. Forget Password - Username -->
+        <div id="forget-user-view" class="view-section">
+            <div class="description">
+                <h2>change password</h2>
+                <p>welcome of you.</p>
+            </div>
+            <form id="forget-user-form">
+                <div class="inputs">
+                    <input class="user" type="text" id="fu-user" placeholder="Enter your username" required minlength="5" maxlength="15">
+                </div>
+                <div id="fu-error" class="error-msg"></div>
+                <input class="button-s" type="submit" value=" confirm  → ">
+            </form>
+            <div class="another-way">
+                <p><a onclick="switchView('login-view')">Back to login</a></p>
+            </div>
+        </div>
+
+        <!-- 4. Forget Password - Phone (بدون +2 في الفاليو) -->
+        <div id="forget-phone-view" class="view-section">
+            <div class="description">
+                <h2>change password</h2>
+                <p>Enter your registered phone number.</p>
+            </div>
+            <form id="forget-phone-form">
+                <div class="inputs">
+                    <input class="phone" type="text" id="fp-phone" placeholder="Enter your phone number" required minlength="11" maxlength="11" pattern="[0-9]{11}" inputmode="numeric" style="direction: ltr; text-align: left;">
+                </div>
+                <div id="fp-error" class="error-msg"></div>
+                <input class="button-s" type="submit" value=" confirm  → ">
+            </form>
+            <div class="another-way">
+                <p><a onclick="switchView('login-view')">Back to login</a></p>
+            </div>
+        </div>
+
+        <!-- 5. New Password -->
+        <div id="new-pass-view" class="view-section">
+            <div class="description">
+                <h2>change password</h2>
+                <p>welcome of you.</p>
+            </div>
+            <form id="new-pass-form">
+                <div class="inputs">
+                    <input class="pass" type="password" id="np-pass1" placeholder="Enter your new password" required minlength="8">
+                    <input class="pass" type="password" id="np-pass2" placeholder="re-enter your new password" required minlength="8">
+                </div>
+                <div id="np-error" class="error-msg"></div>
+                <div id="np-success" class="success-msg"></div>
+                <input class="button-s" type="submit" value="confirm  → ">
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG1WDUreQT1WqdEMiUEBR9meLYQIYvqGcNiey6JNyQK67yK6cPOvmHsxoJERNOHJMD/exec";
+
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+        }
+
+        let resetUsername = "";
+
+        // دالة إرسال الطلبات للسيرفر لتجاوز قيود CORS
+        async function sendData(payload) {
+            const res = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+            return await res.json();
+        }
+
+        // 1. Sign Up
+        document.getElementById('signup-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const user = document.getElementById('su-user').value.trim();
+            const pass = document.getElementById('su-pass').value.trim();
+            const phone = document.getElementById('su-phone').value.trim();
+            const errorDiv = document.getElementById('signup-error');
+
+            if (!/^[a-zA-Z0-9]+$/.test(user)) {
+                errorDiv.style.display = 'block';
+                errorDiv.style.color = '#ef4444';
+                errorDiv.textContent = "Username must contain letters and numbers only!";
+                return;
+            }
+
+            errorDiv.style.display = 'block';
+            errorDiv.style.color = '#3b82f6';
+            errorDiv.textContent = "Creating account...";
+
+            try {
+                const result = await sendData({ action: 'signup', user, pass, phone });
+
+                if (result.status === 'success') {
+                    alert(result.message);
+                    switchView('login-view');
+                    document.getElementById('signup-form').reset();
+                } else {
+                    errorDiv.style.color = '#ef4444';
+                    errorDiv.textContent = result.message;
+                }
+            } catch (err) {
+                errorDiv.style.color = '#ef4444';
+                errorDiv.textContent = "Connection error to server!";
+            }
+        });
+
+        // 2. Login
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            const errorDiv = document.getElementById('login-error');
+
+            errorDiv.style.display = 'block';
+            errorDiv.style.color = '#3b82f6';
+            errorDiv.textContent = "Logging in...";
+
+            try {
+                const result = await sendData({ action: 'login', user, pass });
+
+                if (result.status === 'success') {
+                    alert("Login successful! Welcome " + user);
+                    document.getElementById('login-form').reset();
+                    errorDiv.style.display = 'none';
+                } else {
+                    errorDiv.style.color = '#ef4444';
+                    errorDiv.textContent = result.message;
+                }
+            } catch (err) {
+                errorDiv.style.color = '#ef4444';
+                errorDiv.textContent = "Connection error!";
+            }
+        });
+
+        // 3. Forget Password - Username
+        document.getElementById('forget-user-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const user = document.getElementById('fu-user').value.trim();
+            const errorDiv = document.getElementById('fu-error');
+
+            errorDiv.style.display = 'block';
+            errorDiv.style.color = '#3b82f6';
+            errorDiv.textContent = "Checking username...";
+
+            try {
+                const result = await sendData({ action: 'check_user', user });
+
+                if (result.status === 'success') {
+                    resetUsername = user;
+                    switchView('forget-phone-view');
+                } else {
+                    errorDiv.style.color = '#ef4444';
+                    errorDiv.textContent = result.message;
+                }
+            } catch (err) {
+                errorDiv.style.color = '#ef4444';
+                errorDiv.textContent = "Connection error!";
+            }
+        });
+
+        // 4. Forget Password - Phone
+        document.getElementById('forget-phone-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const phone = document.getElementById('fp-phone').value.trim();
+            const errorDiv = document.getElementById('fp-error');
+
+            errorDiv.style.display = 'block';
+            errorDiv.style.color = '#3b82f6';
+            errorDiv.textContent = "Verifying phone...";
+
+            try {
+                const result = await sendData({ action: 'check_phone', user: resetUsername, phone });
+
+                if (result.status === 'success') {
+                    switchView('new-pass-view');
+                } else {
+                    errorDiv.style.color = '#ef4444';
+                    errorDiv.textContent = result.message;
+                }
+            } catch (err) {
+                errorDiv.style.color = '#ef4444';
+                errorDiv.textContent = "Connection error!";
+            }
+        });
+
+        // 5. Update Password
+        document.getElementById('new-pass-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const p1 = document.getElementById('np-pass1').value.trim();
+            const p2 = document.getElementById('np-pass2').value.trim();
+            const errorDiv = document.getElementById('np-error');
+            const successDiv = document.getElementById('np-success');
+
+            if (p1 !== p2) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = "Passwords do not match!";
+                return;
+            }
+
+            errorDiv.style.display = 'block';
+            errorDiv.style.color = '#3b82f6';
+            errorDiv.textContent = "Updating password...";
+
+            try {
+                const result = await sendData({ action: 'update_pass', user: resetUsername, pass: p1 });
+
+                if (result.status === 'success') {
+                    successDiv.style.display = 'block';
+                    successDiv.textContent = "Password updated! Redirecting to login...";
+                    errorDiv.style.display = 'none';
+
+                    setTimeout(() => {
+                        switchView('login-view');
+                        document.getElementById('new-pass-form').reset();
+                    }, 2000);
+                } else {
+                    errorDiv.style.color = '#ef4444';
+                    errorDiv.textContent = result.message;
+                }
+            } catch (err) {
+                errorDiv.style.color = '#ef4444';
+                errorDiv.textContent = "Connection error!";
+            }
+        });
+    </script>
+</body>
+
+</html>
